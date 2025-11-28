@@ -17,18 +17,18 @@ A responsive CLI (Command Line Interface) that prompts the user (Root@System:/>)
 
 #### 2.4) date: Fetches and displays the current system date (DD/MM/YY).
 
-#### 2.5) exit: Safely terminates the operating system simulation.
+#### 2.5) calc: Supports Addition (+), Subtraction (-), Multiplication (*), and Division (/).
+
+#### 2.6) exit: Safely terminates the operating system simulation.
 
 ## 3. Calculator (calc)
-A fully functional single-digit calculator built from scratch:
+- A fully functional single-digit (only one number) calculator 
 
-Supports Addition (+), Subtraction (-), Multiplication (*), and Division (/).
+- Negative Number Handling: Correctly displays negative results (e.g., 3 - 5 = -2).
 
-Negative Number Handling: Correctly displays negative results (e.g., 3 - 5 = -2).
+- Error Handling: Detects and prevents Division by Zero errors.
 
-Error Handling: Detects and prevents Division by Zero errors.
-
-ASCII Conversion: Manually converts ASCII input to Integers and back for display.
+- ASCII Conversion: Manually converts ASCII input to Integers and back for display.
 
 # Technical Implementation Details
 Language: Assembly x86 (Real Mode).
