@@ -5,23 +5,23 @@ DOOR OS is a simple, command-line operating system simulation developed in x86 A
 The main goal of this project is to simulate the core functionality of a shell interface (CLI). It parses user inputs, executes specific system commands, and manages screen output using BIOS and DOS interrupts. It also features an integrated arithmetic calculator.
 
 # ✨ Key Features
-1. Interactive Command Shell
+## 1. Interactive Command Shell
 A responsive CLI (Command Line Interface) that prompts the user (Root@System:/>) and waits for input.
 
 Command Parsing: Custom string comparison logic to validate and route user commands.
 
-2. System Commands
-help: Displays a menu of all available commands.
+## 2. System Commands
+#### 2.1) help: Displays a menu of all available commands.
 
-cls: Clears the terminal screen (Video Memory).
+#### 2.2) cls: Clears the terminal screen (Video Memory).
 
-time: Fetches and displays the current system time (HH:MM:SS).
+#### 2.3) time: Fetches and displays the current system time (HH:MM:SS).
 
-date: Fetches and displays the current system date (DD/MM/YY).
+#### 2.4) date: Fetches and displays the current system date (DD/MM/YY).
 
-exit: Safely terminates the operating system simulation.
+#### 2.5) exit: Safely terminates the operating system simulation.
 
-3. Integrated Calculator (calc)
+## 3. Integrated Calculator (calc)
 A fully functional single-digit calculator built from scratch:
 
 Supports Addition (+), Subtraction (-), Multiplication (*), and Division (/).
@@ -32,7 +32,7 @@ Error Handling: Detects and prevents Division by Zero errors.
 
 ASCII Conversion: Manually converts ASCII input to Integers and back for display.
 
-🛠️ Technical Implementation Details
+# 🛠️ Technical Implementation Details
 Language: Assembly x86 (Real Mode).
 
 Architecture: .model small, 16-bit.
