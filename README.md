@@ -11,7 +11,7 @@ A responsive CLI (Command Line Interface) that prompts the user (Root@System:/>)
 ## 2. System Commands
 #### 2.1) help: Displays a menu of all available commands.
 
-#### 2.2) cls: Clears the terminal screen (Video Memory).
+#### 2.2) clean: Clears the terminal screen (Video Memory).
 
 #### 2.3) time: Fetches and displays the current system time (HH:MM:SS).
 
