@@ -1,5 +1,5 @@
 # DOOR OS (x86 Assembly Project)
-DOOR OS is a simple, command-line operating system simulation developed in x86 Assembly Language using the emu8086 emulator. This project demonstrates low-level programming concepts, interrupt handling, and direct hardware interaction simulation.
+DOOR OS is a simple, command-line operating system simulation developed in x86 Assembly Language using the emu8086 emulator.
 
 # Project Overview
 The main goal of this project is to simulate the core functionality of a shell interface (CLI). It parses user inputs, executes specific system commands, and manages screen output using BIOS and DOS interrupts. It also features an integrated arithmetic calculator.
@@ -7,8 +7,6 @@ The main goal of this project is to simulate the core functionality of a shell i
 # Key Features
 ## 1. Interactive Command Shell
 A responsive CLI (Command Line Interface) that prompts the user (Root@System:/>) and waits for input.
-
-Command Parsing: Custom string comparison logic to validate and route user commands.
 
 ## 2. System Commands
 #### 2.1) help: Displays a menu of all available commands.
@@ -21,7 +19,7 @@ Command Parsing: Custom string comparison logic to validate and route user comma
 
 #### 2.5) exit: Safely terminates the operating system simulation.
 
-## 3. Integrated Calculator (calc)
+## 3. Calculator (calc)
 A fully functional single-digit calculator built from scratch:
 
 Supports Addition (+), Subtraction (-), Multiplication (*), and Division (/).
@@ -47,11 +45,6 @@ Memory Management: Uses the Stack (PUSH/POP) to preserve register states during 
 
 Procedures: Modular code structure using procedures for repetitive tasks like clear_screen, strcmp, and print_2digits.
 
-## How to Run
-Download or clone this repository.
 
-Open the source file (.asm) in emu8086.
 
-Click Emulate and then Run.
 
-Type help in the simulator window to see the commands.
