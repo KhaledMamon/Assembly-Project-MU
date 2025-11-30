@@ -1,10 +1,12 @@
-.model small        ; Set memory model to small (Code and Data in same segment, 64KB max)
+
+.model small        
+
 .stack 100h         ; Reserve 256 bytes for the stack
 
 .data
     ; --- Data Segment: Messages and Variables ---
     
-    ; 0Dh, 0Ah = New Line (Carriage Return + Line Feed)
+    ; 0Dh, 0Ah = New Line 
     ; '$' = String terminator for DOS
     os_header       db '=================================', 0Dh, 0Ah
                     db '        DOOR OS v1.0 (x86)       ', 0Dh, 0Ah
@@ -15,7 +17,7 @@
     
     ; Help message displaying available commands
     msg_help        db 0Dh, 0Ah, '---------------- COMMANDS ----------------', 0Dh, 0Ah
-                    db ' [1] cls  : Clear the screen', 0Dh, 0Ah
+                    db ' [1] clean  : Clear the screen', 0Dh, 0Ah
                     db ' [2] time : Show system time', 0Dh, 0Ah
                     db ' [3] date : Show system date', 0Dh, 0Ah
                     db ' [4] calc : Calculator (+,-,*,/)', 0Dh, 0Ah 
@@ -48,40 +50,42 @@
                     db ?         ; Actual characters read
                     db 10 dup(0) ; Buffer to store input string
                     
-    ; --- Command Strings for Comparison ---
-    ; Null-terminated strings (like C strings)
-    cmd_help_str    db 'help', 0 
-    cmd_cls_str     db 'cls' , 0
-    cmd_exit_str    db 'exit', 0
-    cmd_time_str    db 'time', 0
-    cmd_date_str    db 'date', 0
-    cmd_calc_str    db 'calc', 0 
+    ; --- Command Strings for Comparison --- 
+
+    cmd_help_str    db 'help'  , 0 
+    cmd_clean_str   db 'clean' , 0
+    cmd_exit_str    db 'exit'  , 0
+    cmd_time_str    db 'time'  , 0
+    cmd_date_str    db 'date'  , 0
+    cmd_calc_str    db 'calc'  , 0 
 
 .code
-main proc
+main proc           ; defult is NEAR --> because we use .model small
     ; Initialize Data Segment
     mov ax, @data   ; Load data segment address
     mov ds, ax      ; Move address to DS register
 
     ; 1. Clear Screen and Print Header at startup
-    call clear_screen_proc ; Call clear screen procedure
+    call clean_screen_proc ; Call clear screen procedure
+    
     lea dx, os_header      ; Load header string address
-    mov ah, 09h            ; DOS Print String function
-    int 21h                ; Execute interrupt
+    mov ah, 09h            
+    int 21h                
 
-shell_loop: ; --- Main OS Loop ---
+; --- Main OS Loop ---
+shell_loop: 
 
-    ; 2. Print Prompt (Root@System:/>)
-    lea dx, prompt
+    ; 2. Print Prompt 
+    lea dx, prompt    ;= Root@System:/>
     mov ah, 09h
     int 21h
 
     ; 3. Get User Input
-    lea dx, input_buffer ; Load buffer address
-    mov ah, 0Ah          ; DOS Buffered Input function
-    int 21h              ; Wait for user input
+    lea dx, input_buffer ; Load buffer address (command)
+    mov ah, 0Ah          
+    int 21h              
 
-    ; 4. Prepare String for Comparison (Add Null Terminator)
+    ; 4. Prepare String for Comparison 
     ; INT 21h/0Ah doesn't add a null terminator, so we do it manually.
     lea bx, input_buffer + 1  ; Address containing actual length
     mov ch, 0
@@ -91,10 +95,9 @@ shell_loop: ; --- Main OS Loop ---
     
     lea bx, input_buffer + 2  ; Start of actual string
     add bx, cx                ; Move to end of string
-    mov byte ptr [bx], 0      ; Add Null (0) terminator
+    mov byte ptr [bx], 0      ; Add Null (0) terminator for stop read string
 
-    ; 5. Command Routing
-    ; Compare input string with stored commands
+    ; 5. Compare input string with stored commands
     
     ; Check "help"
     lea si, input_buffer + 2  ; Source: User input
@@ -102,11 +105,11 @@ shell_loop: ; --- Main OS Loop ---
     call strcmp               ; Call string compare function
     je do_help                ; If equal, jump to help logic
     
-    ; Check "cls"
+    ; Check "clean"
     lea si, input_buffer + 2
-    lea di, cmd_cls_str
+    lea di, cmd_clean_str
     call strcmp
-    je do_cls
+    je do_clean
     
     ; Check "exit"
     lea si, input_buffer + 2
@@ -133,32 +136,32 @@ shell_loop: ; --- Main OS Loop ---
     je do_calc
 
     ; Unknown Command
-    lea dx, msg_unknown
+    lea dx, msg_unknown   ;= Error: Unknown command. Type "help".
     mov ah, 09h
     int 21h
     jmp shell_loop ; Return to loop
 
-; --- Command Execution Blocks ---
-
+; --- Command Execution ---
 do_help:
     lea dx, msg_help
     mov ah, 09h
     int 21h
     jmp shell_loop
 
-do_cls:
-    call clear_screen_proc
+do_clean:
+    call clean_screen_proc
     jmp shell_loop
 
-do_exit:
-    lea dx, msg_bye
+do_exit:                   
+    lea dx, msg_bye ;= Shutting down... Goodbye! 
     mov ah, 09h
     int 21h
-    mov ah, 4ch    ; DOS Terminate Program function
+    
+    mov ah, 4ch    
     int 21h
 
 do_time:
-    lea dx, msg_time
+    lea dx, msg_time ;= Current Time:
     mov ah, 09h
     int 21h
     
@@ -170,7 +173,7 @@ do_time:
     mov al, ch
     call print_2digits
     
-    lea dx, separator
+    lea dx, separator  ;= :
     mov ah, 09h
     int 21h
     
@@ -189,22 +192,26 @@ do_time:
     jmp shell_loop
 
 do_date:
-    lea dx, msg_date
+    lea dx, msg_date   ;= Current Date:
     mov ah, 09h
     int 21h
     
     ; Get System Date
     mov ah, 2Ah
-    int 21h         ; Returns: CX=Year, DH=Month, DL=Day
+    int 21h  ; Returns: CX=Year, DH=Month, DL=Day
+    
     push cx         ; Save Year to stack
+    push dx
     
     ; Print Day
     mov al, dl
     call print_2digits  
     
-    lea dx, slash
+    lea dx, slash     ;= /
     mov ah, 09h
     int 21h
+    
+    pop dx
     
     ; Print Month
     mov al, dh
@@ -223,7 +230,7 @@ do_date:
     int 21h
     mov dl, '0'     
     int 21h
-    pop ax          ; Retrieve Year (e.g., 2025)
+    pop ax          ; Retrieve Year (2025)
     sub ax, 2000    ; Get last 2 digits (25)
     call print_2digits 
 
@@ -256,6 +263,7 @@ do_calc:
     
     mov ah, 01h
     int 21h
+    
     mov opr, al      ; Store operator
 
     ; 3. Request Second Number
@@ -265,6 +273,7 @@ do_calc:
     
     mov ah, 01h
     int 21h
+    
     sub al, 30h      ; Convert ASCII to Integer
     mov val2, al
 
@@ -305,7 +314,8 @@ cal_sub:
     call print_2digits
     jmp shell_loop
 
-sub_neg: ; Handle negative subtraction
+; Handle negative subtraction
+sub_neg: 
     ; Print minus sign manually
     mov ah, 02h
     mov dl, '-'
@@ -349,11 +359,11 @@ main endp ; End of Main Procedure
 ; -----------------------------------------------
 
 ; Procedure to clear the screen
-clear_screen_proc proc
-    mov ax, 0003h ; Video mode 03h (Text 80x25) clears screen
+clean_screen_proc proc
+    mov ax, 0003h ; clean screen
     int 10h
     ret
-clear_screen_proc endp
+clean_screen_proc endp
 
 ; Procedure to compare two strings
 ; Inputs: SI (String 1), DI (String 2)
@@ -388,7 +398,7 @@ print_2digits proc
     push bx
     push dx
     
-    mov ah, 0     ; Clear AH for division
+    mov ah, 0     ; Clean AH for division
     mov bl, 10
     div bl        ; AL = Tens, AH = Units
     
