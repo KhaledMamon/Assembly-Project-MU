@@ -45,6 +45,9 @@ Memory Management: Uses the Stack (PUSH/POP) to preserve register states during 
 
 Procedures: Modular code structure using procedures for repetitive tasks like clear_screen, strcmp, and print_2digits.
 
+# EL-Team 
+### Khaled Gamal Mamon - خالد جمال مأمون
+### Khaled Mohamed Taha - خالد محمد طه
 
 
 
