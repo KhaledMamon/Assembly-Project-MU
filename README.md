@@ -37,7 +37,7 @@ Architecture: .model small, 16-bit.
 
 Interrupts Used:
 
-1. INT 10h: For Video Services (Clearing screen, setting cursor position).
+1. INT 10h: For Video Services (Clearing screen).
 
 2. INT 21h: For DOS Services (String output, Buffered input, System Time/Date).
 
