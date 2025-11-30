@@ -1,5 +1,5 @@
-# DOOR OS (x86 Assembly Project)
-DOOR OS is a simple, command-line operating system simulation developed in x86 Assembly Language using the emu8086 emulator.
+# DOORS OS (x86 Assembly Project)
+DOORS OS is a simple, command-line operating system simulation developed in x86 Assembly Language using the emu8086 emulator.
 
 # Project Overview
 The main goal of this project is to simulate the core functionality of a shell interface (CLI). It parses user inputs, executes specific system commands, and manages screen output using BIOS and DOS interrupts. It also features an integrated arithmetic calculator.
